@@ -62,7 +62,18 @@ app.post('/api/notes', (req, res) => {
 
     console.log(newNote);
 
+    // return the new note to user
+    const response = {
+      status: 'success',
+      body: newNote,
+    };
 
+    res.status(201).json(response);
+    } else {
+    res.status(500).json('Error in posting note');
+    }
+
+});
 
 
 
@@ -83,4 +94,4 @@ app.listen(PORT, () => {
   // .toString(16)
   // .substring(1);
 // };
-  }})
+  
