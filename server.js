@@ -32,7 +32,7 @@ app.post('/api/notes', (req, res) => {
   const { title, text, id } = req.body;
 // if there is a title and text, a unique id is generateds
   if (req.body) {
-    const newNote = {
+    const newNotes = {
       title,
       text,
       id: uuid()
@@ -60,12 +60,12 @@ app.post('/api/notes', (req, res) => {
   }
 });
 
-    console.log(newNote);
+    console.log(newNotes);
 
     // return the new note to user
     const response = {
       status: 'success',
-      body: newNote,
+      body: newNotes,
     };
 
     res.status(201).json(response);
@@ -74,6 +74,16 @@ app.post('/api/notes', (req, res) => {
     }
 
 });
+    const response = {
+      status: 'success',
+      body: newNotes,
+}
+    console.log(response);
+    res.status(201).json(response);
+    } else {
+    res.status(500).json('Error in posting note');
+    }
+  });
 
 
 
