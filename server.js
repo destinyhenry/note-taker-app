@@ -1,8 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
-const notes = require("./db/db.json");
-const uuid = require('uuid');
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -59,7 +58,6 @@ app.post('/api/notes', (req, res) => {
     );
   }
 });
-
     console.log(newNotes);
 
     // return the new note to user
@@ -67,41 +65,32 @@ app.post('/api/notes', (req, res) => {
       status: 'success',
       body: newNotes,
     };
-
-    res.status(201).json(response);
-    } else {
-    res.status(500).json('Error in posting note');
-    }
-
-});
-    const response = {
-      status: 'success',
-      body: newNotes,
-}
     console.log(response);
     res.status(201).json(response);
     } else {
     res.status(500).json('Error in posting note');
     }
+
+});
+   
+    // delete notes
+  app.delete('/api/notes/:id', (req, res) => {
+    const idValue = req.params.id;
+    fs.readFile(path.join(__dirname, './db/db.json'), "utf8", (err, note) => {
+      if (err) throw err;
+      let notes = JSON.parse(note);
+      const newNotes = notes.filter((note) => note.id !== idValue);
+      res.send(newNotes);
+  
+      fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(newNotes, null, 2), (err) => {
+        if (err) throw err;
+      })
+    });
   });
 
-
-
-
-
-
-
-  
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });
 
-
-// might try something with this
-// const uuid = () => {
-  // return Math.floor((1 + Math.random()) * 0x10000)
-  // .toString(16)
-  // .substring(1);
-// };
   
